@@ -1,11 +1,11 @@
 # OPFLearn.jl
 
-<img src="https://github.com/TragerJoswig-Jones/OPFLearn.jl/blob/main/docs/src/assets/logo.svg?raw=true" align="left" width="250" alt="OPFLearn logo">
+<img src="https://github.com/NREL/OPFLearn.jl/blob/main/docs/src/assets/logo.svg?raw=true" align="left" width="250" alt="OPFLearn logo">
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://tragerjoswig-jones.github.io/OPFLearn.jl/stable)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://tragerjoswig-jones.github.io/OPFLearn.jl/dev)
-[![Build Status](https://github.com/tragerjoswig-jones/OPFLearn.jl/workflows/CI/badge.svg)](https://github.com/tragerjoswig-jones/OPFLearn.jl/actions)
-[![Coverage](https://codecov.io/gh/tragerjoswig-jones/OPFLearn.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/tragerjoswig-jones/OPFLearn.jl)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://NREL.github.io/OPFLearn.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://NREL.github.io/OPFLearn.jl/dev)
+[![Build Status](https://github.com/NREL/OPFLearn.jl/workflows/CI/badge.svg)](https://github.com/NREL/OPFLearn.jl/actions)
+[![Coverage](https://codecov.io/gh/NREL/OPFLearn.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/NREL/OPFLearn.jl)
 
 OPFLearn.jl is a Julia package for creating datasets for machine learning approaches to solving AC optimal power flow (AC OPF).
 It was developed to provide researchers with a standardized way to efficiently create AC OPF datasets that are representative of more of the AC OPF feasible load space compared to typical dataset creation methods.
@@ -22,12 +22,12 @@ Datasets created using OPFLearn.jl can be specified to save the following parame
 
 
 ## Documentation
-
-The package [documentation](https://TragerJoswig-Jones.github.io/OPFlearn.jl/stable/) includes a variety of useful information including a [quick-start guide](https://TragerJoswig-Jones.github.io/OPFLearn.jl/stable/quickguide/).
+The package [documentation](https://NREL.github.io/OPFlearn.jl/stable/) includes a variety of useful information including [installation instructions](https://NREL.github.io/OPFlearn.jl/stable/#Installation) and a [quick-start guide](https://NREL.github.io/OPFLearn.jl/stable/quickguide/).
 
 
 ## Available Datasets
 Datasets with 10,000 samples for [PGLib-OPF test networks](https://github.com/power-grid-lib/pglib-opf) case5_pjm, case14_ieee, case30_ieee, case57_ieee, and case118_ieee, can be found on the [NREL Data Catalog here]().
+NOTE THESE DATASETS HAVE NOT BEEN PUBLISHED YET!
 
 ## Acknowledgments
 
@@ -36,7 +36,7 @@ of Science, Office of Workforce Development for Teachers and Scientists
 (WDTS) under the Science Undergraduate Laboratory Internships Program
 (SULI), and the Laboratory Directed Research and Development (LDRD) Program at NREL.
 
-The primary developer is Trager Joswig-Jones (@tragerjoswig-jones) with support from the following contributors,
+The primary developer is Trager Joswig-Jones (@TragerJoswig-Jones) with support from the following contributors,
 - Ahmed S. Zamzam (@asazamzam) NREL, Project Technical Lead and developed original OPFLearn MATLAB code
 - Kyri Baker (@kyrib) CU Boulder, Advised on original AC OPF formulations and dataset creation method
 
@@ -45,17 +45,15 @@ The primary developer is Trager Joswig-Jones (@tragerjoswig-jones) with support 
 
 If you find OPFlearn useful in your work, we kindly request that you cite the following [publication]():
 ```
-@inproceedings{__,
+@misc{OPFLearn,
   author = {Trager Joswig-Jones and Ahmed S. Zamzam and Kyri Baker},
   title = {OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets},
-  booktitle = {},
   year = {2021},
-  month = {},
-  pages = {1-5},
-  doi = {}
 }
 ```
-Citation of [PowerModels](https://github.com/lanl-ansi/PowerModels.jl), used for formulating AC OPF problems is also encouraged when publishing works that use OPFLearn. Note that OPFLearn was NOT developed in any part in collaboration with PowerModels.jl.
+NOTE THIS PAPER HAS NOT BEEN PUBLISHED YET!
+
+Citation of [PowerModels](https://github.com/lanl-ansi/PowerModels.jl), used for formulating AC OPF problems, is also encouraged when publishing works that use OPFLearn. Note that OPFLearn was NOT developed in any part in collaboration with PowerModels.jl.
 
 
 ## License

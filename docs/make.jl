@@ -9,7 +9,7 @@ makedocs(;
     sitename="OPFLearn",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://tragerjoswig-jones.github.io/OPFLearn.jl",
+        canonical="https://NREL.github.io/OPFLearn.jl",
         assets=String[],
     ),
     pages=[
@@ -31,6 +31,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/TragerJoswig-Jones/OPFLearn.jl.git",
+    repo="github.com/NREL/OPFLearn.jl.git",
     devbranch = "main"
 )
