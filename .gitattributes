@@ -1,0 +1,2 @@
+# Skip MATLAB files when determine repository language
+*.m linguist-vendored=true
