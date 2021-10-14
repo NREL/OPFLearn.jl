@@ -44,9 +44,9 @@ This results object will only contain subdictionaries for these two specified ou
 
 More information from each run can be saved by specifying additional parameters when calling create samples. 
 This information includes iteration statistics, found maximum load bus demands, infeasible AC OPF samples, and the sampling space polytope definition.
-See section [additional_results](@ref) for instructions on how to enable saving these additional results.
+See the [Additional Results](@ref additional_results) section for instructions on how to enable saving these additional results.
 
 ## Distributed Processing
 
 If there are multiple processors available, the runtime to create samples can be reduced by using distributed processing. 
-OPFLearn has addition functions for creating AC OPF datasets that utilize distributed processing, which can be read about in the [distributed_processing](@ref) section.
+OPFLearn has addition functions for creating AC OPF datasets that utilize distributed processing, which can be read about in the [Distributed Processing](@ref distributed_processing) section.
