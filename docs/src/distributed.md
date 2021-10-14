@@ -1,4 +1,4 @@
-# Distributed Processing
+# Distributed Processing (@id distributed_processing)
 
 Dataset creation can be sped up by using distributed processing. 
 Before beginning distributed dataset creation, the user must create worker processes through the [Distributed](https://docs.julialang.org/en/v1/stdlib/Distributed/) package. 

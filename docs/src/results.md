@@ -80,7 +80,7 @@ All the available result variables can be seen in this table,
 
 The result data dictionary can be converted to an array for easier data analysis with the [`results_to_array`](@ref) function.
 
-## Additional Results
+## Additional Results (@id additional_results)
 
 Additional result parameters can be saved if specified in the function call to create the dataset.
 The additional results parameters are, 
@@ -166,7 +166,7 @@ save_results_csv(results, file_name)
 ```
 
 where `results` contains the dataset to be saved, and file_name is the name that the file will be saved as.
-The format of the exported results 'csv' file is explained in the [Dataset Format Section]()
+The format of the exported results 'csv' file is explained in the [Dataset Format](@ref) Section
 
 ### Statistics
 

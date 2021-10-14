@@ -65,7 +65,7 @@ Additionally the function can accept any number of optional arguments, which can
 By default OPFLearn uses a [hit and run sample method translated from MATLAB (Copyright (c) 2011, Tim Benham).](https://www.mathworks.com/matlabcentral/fileexchange/34208-uniform-distribution-over-a-convex-polytope?s_tid=prof_contriblnk)
 
 !!! note
-	Note only the hit and run methods (hitandrun & achr) in the OPFLearn [`sample_uniform_cprnd`](@ref) function have been extensively tested.
+	Note only the hit and run methods (hitandrun & achr) in the OPFLearn [`sample_polytope_cprnd`](@ref) function have been extensively tested.
 
 ### AC OPF Relaxations
 
