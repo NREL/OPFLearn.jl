@@ -5,7 +5,6 @@
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://NREL.github.io/OPFLearn.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://NREL.github.io/OPFLearn.jl/dev)
 [![Build Status](https://github.com/NREL/OPFLearn.jl/workflows/CI/badge.svg)](https://github.com/NREL/OPFLearn.jl/actions)
-[![Coverage](https://codecov.io/gh/NREL/OPFLearn.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/NREL/OPFLearn.jl)
 
 OPFLearn.jl is a Julia package for creating datasets for machine learning approaches to solving AC optimal power flow (AC OPF).
 It was developed to provide researchers with a standardized way to efficiently create AC OPF datasets that are representative of more of the AC OPF feasible load space compared to typical dataset creation methods.

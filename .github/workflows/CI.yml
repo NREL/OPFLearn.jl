@@ -49,18 +49,21 @@ jobs:
       - uses: julia-actions/setup-julia@v1
         with:
           version: '1'
-      - run: |
+      - name: Install Dependencies
+        run: |
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
             Pkg.instantiate()'
-      - run: |
+      - name: Build
+        run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
             using OPFLearn
             DocMeta.setdocmeta!(OPFLearn, :DocTestSetup, :(using OPFLearn); recursive=true)
             doctest(OPFLearn)'
-      - run: julia --project=docs docs/make.jl
+      - name: Deploy
+        run: julia --project=docs docs/make.jl
         env:
           JULIA_PKG_SERVER: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,7 @@
 name = "OPFLearn"
 uuid = "426fd8f4-da10-4833-b320-d1e833f8a26f"
 authors = ["Trager Joswig-Jones"]
+repo = "https://github.com/NREL/OPFLearn.jl"
 version = "0.1.0"
 
 [deps]
