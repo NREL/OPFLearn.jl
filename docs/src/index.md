@@ -7,7 +7,7 @@ CurrentModule = OPFLearn
 
 ## Package Overview
 
-[OPFLearn.jl](https://github.com/tragerjoswig-jones/OPFLearn.jl) is a Julia package for creating datasets for machine learning approaches to solving AC optimal power flow (AC OPF).
+[OPFLearn.jl](https://github.com/NREL/OPFLearn.jl) is a Julia package for creating datasets for machine learning approaches to solving AC optimal power flow (AC OPF).
 It was developed to provide researchers with a standardized way to efficiently create AC OPF datasets that are representative of more of the AC OPF feasible load space compared to typical dataset creation methods.
 The OPFLearn dataset creation method uses a relaxed AC OPF formulation to reduce the volume of the unclassified input space throughout the dataset creation process. 
 Over time this input space tightens around the relaxed AC OPF feasible region to increase the percentage of feasible load profiles found while uniformly sampling the input space. Load samples are processed using AC OPF formulations from [PowerModels.jl](https://github.com/lanl-ansi/PowerModels.jl).
@@ -17,17 +17,7 @@ More information on the dataset creation method can be found in our publication,
 
 If you haven’t already, your first step should be to install Julia. Instructions are available at julialang.org/downloads.
 
-Installing OPFLearn now takes two steps using the Julia package manager.
-
-First, add NREL’s Julia package registry to your Julia installation. 
-From the main Julia prompt, type ] to enter the package management REPL. 
-Type (or paste) the following,
-
-```julia
-] registry add https://github.com/NREL/JuliaRegistry.git
-```
-
-Then install the OPFLearn package with,
+Installing OPFLearn can now be done using the Julia package manager.
 
 ```julia
 ] add OPFLearn
