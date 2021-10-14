@@ -18,7 +18,6 @@ const PM = PowerModels
 
 import Random
 
-import GLPK
 import Ipopt
 
 include("create_samples.jl")
