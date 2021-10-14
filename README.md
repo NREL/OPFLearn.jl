@@ -37,7 +37,7 @@ of Science, Office of Workforce Development for Teachers and Scientists
 
 The primary developer is Trager Joswig-Jones (@TragerJoswig-Jones) with support from the following contributors,
 - Ahmed S. Zamzam (@asazamzam) NREL, Project Technical Lead and developed original OPFLearn MATLAB code
-- Kyri Baker (@kyrib) CU Boulder, Advised on original AC OPF formulations and dataset creation method
+- Kyri Baker (@kyribaker) CU Boulder, Advised on original AC OPF formulations and dataset creation method
 
 
 ## Citing OPFLearn
