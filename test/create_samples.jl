@@ -221,8 +221,8 @@ end
 		
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 100
-		results = create_samples(net_file, K, net_path="data", 
-							     save_certs=true, stat_track=1, save_infeasible=true)
+		results = dist_create_samples(net_file, K, net_path="data", 
+									  save_certs=true, stat_track=1, save_infeasible=true)
 		@test haskey(results, "inputs")
 		@test haskey(results, "outputs")
 		@test haskey(results, "duals")
