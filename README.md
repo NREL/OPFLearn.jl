@@ -21,7 +21,7 @@ Datasets created using OPFLearn.jl can be specified to save the following parame
 
 
 ## Documentation
-The package [documentation](https://NREL.github.io/OPFlearn.jl/stable/) includes a variety of useful information including [installation instructions](https://NREL.github.io/OPFlearn.jl/stable/#Installation) and a [quick-start guide](https://NREL.github.io/OPFLearn.jl/stable/quickguide/).
+The package [documentation](https://NREL.github.io/OPFLearn.jl/stable/) includes a variety of useful information including [installation instructions](https://NREL.github.io/OPFLearn.jl/stable/#Installation) and a [quick-start guide](https://NREL.github.io/OPFLearn.jl/stable/quickstartguide/).
 
 
 ## Available Datasets
