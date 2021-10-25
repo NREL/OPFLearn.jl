@@ -311,7 +311,7 @@ function initialize_polytope(num_loads, pl_max, pl_min, pf_min, pf_lagging, pg_m
 		# Max reactive demand constraint
 		max_ql_constr = hcat(-I(num_loads).*d, I(num_loads))
 		# Min reactive demand constraint
-		if pl_lagging
+		if pf_lagging
 			min_ql_constr = hcat(zeros((num_loads, num_loads)), -I(num_loads))
 		else
 			min_ql_constr = hcat(I(num_loads).*d, -I(num_loads))
