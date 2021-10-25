@@ -11,33 +11,33 @@ results = create_samples("pglib_opf_case5_pjm.m", N)
 
 ## Getting Results
 
-OPFLearn's create_samples functions return the results data as a dictionary. 
-This dictionary contains sub-dictionaries containing feasible AC OPF sample input, output, and lagrangian dual data. 
-Each of these three primary data categories dictionaries map variable key values to arrays containing the corresponding data for a vector of variables. 
+OPFLearn's create_samples functions return the resulting sample data as a dictionary. 
+This dictionary contains sub-dictionaries containing feasible AC OPF sample input, output, and lagrangian dual values. 
+Each of these three primary data category's dictionaries map variable key values to arrays containing the corresponding data for relevent elements in the network. 
 These arrays are two dimensional with columns corresponding to elements in the system and rows corresponding to different AC OPF samples. 
 
 The input data, queried with `results["inputs"]`, is a dictionary containing information for input variables to the AC OPF problem.
 The output data, queried with `results["outputs"]`, is a dictionary of AC OPF solutions corresponding to the input data load profiles.
-The dual data, queried with `results["duals"]`, is a dictionary containing information about the lagrangian dual values found when solving the AC OPF problem for each sample. Nonzero values (Typically must be greater than 1e-5) indicate that the contraint associated with a dual value is active.
+The dual data, queried with `results["duals"]`, is a dictionary containing information about the lagrangian dual values found when solving the AC OPF problem for each sample. Nonzero values (In OPFLearn values greater than 1e-5) indicate that the contraint associated with a dual value is active.
 
 For example, the following dictionary query can be used to find the active power, `pl`, at each load in the network for the first saved AC OPF sample,
 
-```
+```julia
 results["inputs"]["pl"][1,:]
 ```
 
-Note that input and output data is in per unit. The base MVA can be pulled from a [PowerModels network data dictionary](https://lanl-ansi.github.io/PowerModels.jl/stable/network-data/) 
+Note that input and output data is in per unit. The base MVA can be found from the [PowerModels network data dictionary](https://lanl-ansi.github.io/PowerModels.jl/stable/network-data/).
 
 By default input, output, and dual result data for all variables are saved to the results object. 
-To reduce the size of the result object a subsection of the variables to save can be provided in the create samples call. 
+To reduce the size of the resulting data an array of the desired variables can be provided in the create samples call. 
 For example, if you are only interested in saving the generator active power, `pg`, and generator bus voltage magnitudes, `vm_gen`, the following call can be made,
 
-```
+```julia
 outputs = ["pg", "vm_gen"]
 results = create_samples("pglib_opf_case5_pjm.m", N, output_vars=outputs)
 ```
 
-This results object will only contain subdictionaries for these two specified output varaibles. The input and dual results will still contain all the default variables, unless also specified.
+This results object will only contain output data for these two specified output varaibles. Note, the input and dual results will still contain all the default variables, unless also specified.
 
 
 ## Additional Results

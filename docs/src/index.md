@@ -15,7 +15,7 @@ More information on the dataset creation method can be found in our publication,
 
 ## Installation
 
-If you haven’t already, your first step should be to install Julia. Instructions are available at julialang.org/downloads.
+If you haven’t already, your first step should be to install Julia. Instructions are available at [julialang.org/downloads](https://julialang.org/downloads/).
 
 Installing OPFLearn can now be done using the Julia package manager.
 
@@ -23,8 +23,15 @@ Installing OPFLearn can now be done using the Julia package manager.
 ] add OPFLearn
 ```
 
-To use different formulations for the creating the relaxed AC OPF problems, such as a Semidefinite Relaxation, additional solvers are required. 
-For conic AC OPF formulations a conic solver must be installed. OPFLearn was tested with the SCS solver, which can be installed with
+For the development version of OPFLearn, install the package with,
+
+```julia
+] add OPFLearn#main
+```
+
+By default OPFLearn uses [IPOPT](https://github.com/jump-dev/Ipopt.jl) to solve AC OPF problems, which comes installed as a dependancy of OPFLearn.
+When using different formulations for relaxed AC OPF problems, such as a Semidefinite Relaxation, additional solvers are required. 
+For conic AC OPF formulations a conic solver must be installed. OPFLearn was tested with the [SCS](https://github.com/jump-dev/SCS.jl) solver, which can be installed with
 
 ```julia
 ] add SCS
@@ -37,7 +44,7 @@ Testing that the OPFLearn package works properly can be done with
 ```
 
 !!! note
-	OPFLearn can take a while to start up as Julia takes a notable amount of time to precompile IPOPT. 
+	OPFLearn can take a while to start up on the first run of each session as Julia takes a notable amount of time to precompile IPOPT. 
 
 !!! warn
 	In the current release of OPFLearn the distributed dataset creation tests can get stuck loading packages on distributed processes. 

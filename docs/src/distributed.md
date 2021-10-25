@@ -1,4 +1,4 @@
-# Distributed Processing (@id distributed_processing)
+# [Distributed Processing](@id distributed_processing)
 
 Dataset creation can be sped up by using distributed processing. 
 Before beginning distributed dataset creation, the user must create worker processes through the [Distributed](https://docs.julialang.org/en/v1/stdlib/Distributed/) package. 
@@ -6,7 +6,7 @@ A simple way to do this when running distributed processes locally on a single c
 
 ```julia
 # Create worker processes
-nproc = 4 # The desired number of CPUs to run with #Sys.CPU_THREADS
+nproc = 4 # The desired number of CPUs to run with
 # Clear any existing worker processes if present
 Distributed.nprocs() > 1 && Distributed.rmprocs(Distributed.workers())
 # Create worker processes
@@ -31,4 +31,4 @@ The distributed sample creation function has the same arguments as the single pr
 Distributed processing splits the sampling / result handling from the sample processing with one processor handling sampling and the remaining processors processing samples.
 
 !!! note
-	A significant increase in speed is not seen unless more than 3 processors are used.
+	A significant increase in speed is not seen unless more than 3 processors are used. On the other hand, specifying more processors than are available will likely result in an error when loading OPFLearn on distributed processes.

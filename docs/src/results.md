@@ -80,7 +80,7 @@ All the available result variables can be seen in this table,
 
 The result data dictionary can be converted to an array for easier data analysis with the [`results_to_array`](@ref) function.
 
-## Additional Results (@id additional_results)
+## [Additional Results](@id additional_results)
 
 Additional result parameters can be saved if specified in the function call to create the dataset.
 The additional results parameters are, 
@@ -111,7 +111,7 @@ Specifying a larger integer will save more information as follows,
 This information can then be found in the results dictionary with `results["stats"]`. 
 
 !!! warn
-	For large datasets or networks using a level greater than 1 will likely result in a large amount of memory usage.
+	For large datasets or networks using a level greater than 1 will likely result in a large amount of memory usage and slow down the dataset creation process.
 
 !!! note
 	Variance tracking needs to be turned on with the boolean `variance` argument for data to be saved with `stat_track=3`.

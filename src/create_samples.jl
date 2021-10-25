@@ -5,7 +5,7 @@ then starts creating samples
 function create_samples(net::String, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=Inf, discard=false, variance=false,
 						input_vars=DEFAULT_INPUTS, output_vars=DEFAULT_OUTPUTS, dual_vars=DEFAULT_DUALS,
 						sampler=sample_polytope_cprnd, sampler_opts=Dict{Symbol,Any}()::Dict{Symbol}, A=[]::Array, b=[]::Array,
-						pl_max=nothing, pl_min=nothing, pf_min=0.7, pf_lagging=true, save_certs=false, save_max_load=false,
+						pl_max=nothing, pl_min=nothing, pf_min=0.7071, pf_lagging=true, save_certs=false, save_max_load=false,
 						print_level=0, stat_track=false, save_while=false, save_infeasible=false, save_path="", net_path="",
 						model_type=PM.QCLSPowerModel, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL), 
 						opf_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL))
@@ -70,7 +70,7 @@ Modified from AgenerateACOPFsamples.m written by Ahmed Zamzam
 function create_samples(net::Dict, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=Inf, discard=false, variance=false,
 							input_vars=DEFAULT_INPUTS, output_vars=DEFAULT_OUTPUTS, dual_vars=DEFAULT_DUALS,
 							sampler=sample_polytope_cprnd, sampler_opts=Dict{Symbol,Any}()::Dict{Symbol}, A=[]::Array, b=[]::Array,
-							pl_max=nothing, pl_min=nothing, pf_min=0.7, pf_lagging=true, reset_level=0, save_certs=false, save_max_load=false,
+							pl_max=nothing, pl_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, save_certs=false, save_max_load=false,
 							print_level=0, stat_track=false, save_while=false, save_infeasible=false, save_path="", net_path="",
 							model_type=PM.QCLSPowerModel, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL), 
 							opf_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL))
@@ -271,14 +271,16 @@ function initialize(net, pf_min, pf_lagging, pl_max, pl_min,
 
 	
     # Initialize polytope, Ax <= b, parameter data structures
-	A, b = initialize_polytope(num_loads, pl_max, pl_min, pg_max, A, b, sampler, sampler_opts)
+	A, b = initialize_polytope(num_loads, pl_max, pl_min, pf_min, pf_lagging, pg_max, 
+							   A, b, sampler, sampler_opts)
 	
 	# Create find nearest feasible point model without the objective
 	pm = PM.instantiate_model(net_r, model_type, build_opf_var_load)
 	fnfp_model = find_nearest_feasible_model(pm, print_level=print_level, solver=r_solver)
 	
 	# Initialize sampler origin
-	x, base_load_feasible = initialize_sample_origin(A, b, base_load, num_loads, fnfp_model, reset_level, print_level)
+	x, base_load_feasible = initialize_sample_origin(A, b, base_load, num_loads, fnfp_model, 
+													 reset_level, print_level)
 	
 	return A, b, x, results, fnfp_model, base_load_feasible, net_r
 end
@@ -289,22 +291,39 @@ Creates A & b matrices defining a polytope, Ax<=b, if A & b are not given.
 If A & b are given, checks their validity.
 
 The initialized polytope has load constraints: 
-constrains the maximum active demand to the found maximum individual load bus demand values,
-constrains the minimum active demand to zero,
+constrains the maximum active demand to the given maximum active demand values,
+constrains the minimum active demand to the given minimum active demand values,
 constrains the minimum reactive demand to zero,
-constrains the reactive demand to less than the active demand at each load bus,
+constrains the reactive demand with the given minimum power factor,
 constrains the maximum total active load to the sum of generator active power ratings.
 """
-function initialize_polytope(num_loads, pl_max, pl_min, pg_max, A=[], b=[], 
+function initialize_polytope(num_loads, pl_max, pl_min, pf_min, pf_lagging, pg_max, A=[], b=[], 
 							 sampler=sample_polytope_cprnd, sampler_opts=Dict())
 	if isempty(A) & isempty(b)
 		isnothing(pl_min) && (pl_min=zeros((num_loads, 1)))
+		pf_min isa Number && (pf_min = ones(num_loads) .* pf_min)
+		d = tan.(acos.(pf_min))
 		
-		A = vcat(hcat(I(num_loads), zeros((num_loads, num_loads))),
-				 hcat(-I(num_loads), zeros((num_loads, num_loads))),
-				 hcat(zeros((num_loads, num_loads)), -I(num_loads)),
-				 hcat(-I(num_loads), I(num_loads)),
-				 hcat(ones((1, num_loads)), zeros((1, num_loads))),
+		# Max active demand constaint
+		max_pl_constr = hcat(I(num_loads), zeros((num_loads, num_loads)))
+		# Min active demand constraint
+		min_pl_constr = hcat(-I(num_loads), zeros((num_loads, num_loads)))
+		# Max reactive demand constraint
+		max_ql_constr = hcat(-I(num_loads).*d, I(num_loads))
+		# Min reactive demand constraint
+		if pl_lagging
+			min_ql_constr = hcat(zeros((num_loads, num_loads)), -I(num_loads))
+		else
+			min_ql_constr = hcat(I(num_loads).*d, -I(num_loads))
+		end
+		# Total active demand constraint
+		tot_pl_constr = hcat(ones((1, num_loads)), zeros((1, num_loads)))
+		
+		A = vcat(max_pl_constr,
+				 min_pl_constr,
+				 max_ql_constr,
+				 min_ql_constr,
+				 tot_pl_constr,
 				 )
 		b = vcat(pl_max,
 				 pl_min,

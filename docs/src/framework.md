@@ -39,8 +39,8 @@ Example iterations of this process are illustrated below where SOC represents th
 
 ## Framework 
 
-OPFLearn was developed to allow the user to specify functions for generalizable parts of the dataset creation process.
-The following operations in the OPFLearn framework can be modified by the user. 
+OPFLearn was developed to allow the user to specify functions for modular parts of the dataset creation process.
+The following operations in the OPFLearn framework can be provided by the user. 
 - **Initial Sampling Space**: The A and b matrices defining a polytope, Ax ≤ b.
 - **Sampling Method**: A function to sample network load profiles given the current sampling space and nominal load.
 - **AC OPF Relaxations**: The AC OPF problem relaxations used to find the maximum load demands and nearest feasible loads.
@@ -53,13 +53,19 @@ By default this sampling space is initialized with the following constraints,
 - The active demand is less than the found maximum individual load bus demand values,
 - The active demand is greater than zero,
 - The reactive demand is greater than zero,
-- The reactive demand is less than the active demand at each load bus,
+- The reactive demand is limited by the specified minimum power factor (default: 0.7071),
 - The total active load is less than the sum of generator active power ratings.
+
+The default initial sampling space is impacted by the following arguments,
+- 'pl_max': The maximum active load for each load in the system. By default this is found with an optimization problem.
+- 'pl_min': The minimum active load for each load in the system. By default this is 0.
+- 'pf_min': A single number or array with values for each load in the system indicating the minimum power factor.
+- 'pf_lagging': A boolean indicating if the power factor of loads are only lagging (inductive), or can be lagging or leading (inductive or capacitive).
 
 ### Sampling Method
 
-A function for sampling load profiles for the network can be provided to the dataset creation functions through the `sampler` argument.
-This function must accept four required arguments A, b, x0, n_samples, where A & b define the sampling space as a polytope, x0 is a point within the sampling space, and n_samples is the number of samples to produce.
+A function for sampling load profiles from the sample space can be provided to the dataset creation functions through the `sampler` argument.
+This function must accept four required arguments A, b, x0, n_samples, where A & b define the sampling space as a polytope (Ax<b), x0 is a point within the sampling space, and n_samples is the number of samples to produce.
 Additionally the function can accept any number of optional arguments, which can be provided through the `sampler_opts` arguments as a dictionary mapping optional argument names as symbols to the desired parameter (e.g. :method => "hitandrun").
 
 By default OPFLearn uses a [hit and run sample method translated from MATLAB (Copyright (c) 2011, Tim Benham).](https://www.mathworks.com/matlabcentral/fileexchange/34208-uniform-distribution-over-a-convex-polytope?s_tid=prof_contriblnk)
@@ -71,9 +77,10 @@ By default OPFLearn uses a [hit and run sample method translated from MATLAB (Co
 
 The relaxations to formulate relaxed AC OPF problems can be specified with the `model_type` argument for dataset creation functions. 
 Most relaxations available in the PowerModels.jl package can be used. A list of these [PowerModels relaxations can be found here](https://lanl-ansi.github.io/PowerModels.jl/stable/formulation-details/#Quadratic-Relaxations).
+By default OPFLearn uses [a Strengthened QC-Relaxation](https://lanl-ansi.github.io/PowerModels.jl/stable/formulation-details/#PowerModels.QCLSPowerModel), 'PowerModels.QCLSPowerModel'.
 
 !!! note
-	Note that for conic relaxations a nondefault solver will likely need for be used.
+	Note that for conic relaxations, such as PowerModels.SDPWRMPowerModel, a non-default solver will likely need for be used.
 
 ### Optimization Solvers
 

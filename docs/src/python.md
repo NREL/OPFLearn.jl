@@ -5,4 +5,4 @@ This package utilizes [PyJulia](https://github.com/JuliaPy/pyjulia) to allow Pyt
 
 The Python interface has most functions from OPFLearn.jl as Python functions, but not all.
 For functions that are not included in the interface, PyJulia calls can be used.
-Also note that the Python interface does not allow for passing in custom functions for sampling.
+Also note that the Python interface does not allow for passing in modular functions.
