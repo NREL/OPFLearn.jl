@@ -43,6 +43,14 @@ Testing that the OPFLearn package works properly can be done with
 ] test OPFLearn
 ```
 
+To test distributed dataset creation the following commands can be entered in the REPL, where nproc is the number of processors to run the test with as a string.
+
+```julia
+using Pkg
+nproc = "4"
+Pkg.test("OPFLearn"; test_args = [nproc])
+```
+
 !!! note
 	OPFLearn can take a while to start up on the first run of each session as Julia takes a notable amount of time to precompile IPOPT. 
 
