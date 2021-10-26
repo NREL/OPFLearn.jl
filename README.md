@@ -25,8 +25,7 @@ The package [documentation](https://NREL.github.io/OPFLearn.jl/stable/) includes
 
 
 ## Available Datasets
-Datasets with 10,000 samples for [PGLib-OPF test networks (v21.07)](https://github.com/power-grid-lib/pglib-opf) case5_pjm, case14_ieee, case30_ieee, case57_ieee, and case118_ieee, can be found on the [NREL Data Catalog here]().
-NOTE THESE DATASETS HAVE NOT BEEN PUBLISHED YET!
+Datasets with 10,000 samples for [PGLib-OPF test networks (v21.07)](https://github.com/power-grid-lib/pglib-opf) case5_pjm, case14_ieee, case30_ieee, case57_ieee, and case118_ieee, can be found on the [NREL Data Catalog here](https://data.nrel.gov/submissions/177).
 
 ## Acknowledgments
 
