@@ -41,15 +41,17 @@ The primary developer is Trager Joswig-Jones (@TragerJoswig-Jones) with support 
 
 ## Citing OPFLearn
 
-If you find OPFlearn useful in your work, we kindly request that you cite the following [publication]():
+If you find OPFlearn useful in your work, we kindly request that you cite the following [publication](https://arxiv.org/abs/2111.01228):
 ```
-@misc{OPFLearn,
-  author = {Trager Joswig-Jones and Ahmed S. Zamzam and Kyri Baker},
-  title = {OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets},
-  year = {2021},
+@misc{joswigjones2021opflearn,
+      title={OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets}, 
+      author={Trager Joswig-Jones and Kyri Baker and Ahmed S. Zamzam},
+      year={2021},
+      eprint={2111.01228},
+      archivePrefix={arXiv},
+      primaryClass={eess.SY}
 }
 ```
-NOTE THIS PAPER HAS NOT BEEN PUBLISHED YET!
 
 Citation of [PowerModels](https://github.com/lanl-ansi/PowerModels.jl), used for formulating AC OPF problems, is also encouraged when publishing works that use OPFLearn. Note that OPFLearn was NOT developed in any part in collaboration with PowerModels.jl.
 
