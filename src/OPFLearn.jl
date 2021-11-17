@@ -54,12 +54,13 @@ const DEFAULT_DUALS = ["v_min", "v_max", "pg_min", "pg_max", "qg_min", "qg_max",
 
 const DEFAULT_SAVE_ORDER = vcat(DEFAULT_INPUTS, DEFAULT_OUTPUTS, DEFAULT_DUALS)
 
-const ELEMENT_LABELS = Dict(zip(DEFAULT_SAVE_ORDER, 
+const ELEMENT_LABELS = Dict(zip(append!(DEFAULT_SAVE_ORDER, ["vm", "va"]), 
 				    ["load", "load", 
 					 "gen", "gen", "gen", "bus", 
 					 "line", "line", "line", "line",
 					 "bus", "bus", "gen", "gen", "gen", "gen",
-					 "line", "line", "line", "line"]))
+					 "line", "line", "line", "line",
+					 "bus", "bus"]))
 
 const VAR_SIZES = Dict([
 					 ("v_min", [:n_buses]),
