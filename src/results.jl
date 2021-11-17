@@ -104,8 +104,8 @@ end
 
 
 """ 
-Checks if the given sample should be stores and updates stat tracking info
-Stores the given samlpe is it should be stored.
+Checks if the given sample should be stored and gathers stat tracking info
+Calls a helper function to store the given samlpe if it should be stored.
 """
 function store_feasible_sample(s, u, v, k, i, K, iter_stats, AC_inputs, AC_outputs, duals, dual_vars,
 							   x, result, discard, variance, net_name, now_str, save_path, save_all,
@@ -163,8 +163,8 @@ end
 
 
 """ 
-Stores the given sample results into the given load profile, x, and PandaPower network 
-with AC OPF results.
+Checks if the given sample should be stored and stores the given sample to the results object.
+Returns stat tracking information.
 """
 function store_feasible_sample(AC_inputs, AC_outputs, duals, dual_vars, x, results, discard, variance, keep_samples=true)
 	# Gen. & Ext. and Dual Results

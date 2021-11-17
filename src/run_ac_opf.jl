@@ -43,13 +43,13 @@ function run_ac_opf(network_data::Dict; print_level=0, from_py=false,
 		vm[bus_num] = res_bus[bus_idx]["vm"]
 		va[bus_num] = res_bus[bus_idx]["va"]
 	end
-	v = vm.*exp.(1im*deg2rad.(va)) # TASK: Determine if the assumptions va is in deg is correct
+	v = vm.*exp.(1im*deg2rad.(va))
 	vmg = vm[gen_bus_nums]
 	
 	primals["vm"] = Array(vm')
 	primals["va"] = Array(va')
 	primals["vm_gen"] = Array(vmg')
-	primals["v_bus"] = Array(v')
+	primals["v_bus"] = Array(transpose(v))
 
 	pg = zeros(num_gens)
 	qg = zeros(num_gens)

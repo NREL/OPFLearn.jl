@@ -47,7 +47,8 @@ const EPS = 1e-5
 const STAT_ORDER = ["pl", "ql", "pg", "vm_gen"]
 const DEFAULT_INPUTS = ["pl", "ql"] 
 const DEFAULT_OUTPUTS = ["pg", "qg", "vm_gen", "v_bus", 
-						 "p_to", "q_to", "p_fr", "q_fr"]
+						 "p_to", "q_to", "p_fr", "q_fr"]  
+# "vm" and "va" can be added for voltage magnitudes and angles at each bus
 const DEFAULT_DUALS = ["v_min", "v_max", "pg_min", "pg_max", "qg_min", "qg_max",
 					   "p_to_max", "q_to_max", "p_fr_max", "q_fr_max"]
 

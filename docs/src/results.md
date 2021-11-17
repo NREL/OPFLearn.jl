@@ -66,7 +66,7 @@ All the available result variables can be seen in this table,
 			</li></ul>
 		</td>
 		<td>	
-			<ul><li>Generator Active Power (pg)</li><li>Generator Reactive Power (qg)</li><li>Generator Bus Voltage Magnitude (vm_gen)</li><li>Bus Voltage (v_bus)</li><li>Edge To Active Power (p_to)</li><li>Edge From Active Power (p_fr)</li><li>Edge To Reactive Power (q_to)</li><li>Edge From Reactive Power (q_fr)</li></ul>
+			<ul><li>Generator Active Power (pg)</li><li>Generator Reactive Power (qg)</li><li>Generator Bus Voltage Magnitude (vm_gen)</li><li>Bus Complex Voltage (v_bus)</li><li>Bus Voltage Magnitude (vm)</li><li>Bus Voltage Angle (va)</li><li>Edge To Active Power (p_to)</li><li>Edge From Active Power (p_fr)</li><li>Edge To Reactive Power (q_to)</li><li>Edge From Reactive Power (q_fr)</li></ul>
 		</td>
 		<td>
 			<ul><li>Min Bus Voltage (v_min)</li><li>Max Bus Voltage (v_max)</li><li>Min Generator Active Power (pg_min)</li><li>Max Generator Active Power (pg_max)</li><li>Min Generator Reactive Power (qg_min)</li><li>Max Generator Reactive Power (qg_max)</li><li>Min Edge To Active Power (p_to_min)</li><li>Max Edge To Active Power (p_to_max)</li><li>Min Edge From Active Power (p_fr_min)</li><li>Max Edge From Active Power (p_fr_max)</li><li>Min Edge From Reactive Power (q_fr_min)</li><li>Max Edge From Reactive Power (q_fr_max)</li></ul>
@@ -75,6 +75,8 @@ All the available result variables can be seen in this table,
   </tbody>
 </table>
 ```
+
+By default all variables are stored to the results object, except for the bus voltage magnitude and bus voltage angle.
 
 ### Converting to an Array
 
