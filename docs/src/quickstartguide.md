@@ -33,10 +33,10 @@ Note that input and output data is in per unit. The base MVA can be found from t
 
 By default input, output, and dual result data for all variables are saved to the results object. 
 To reduce the size of the resulting data an array of the desired variables can be provided in the create samples call. 
-For example, if you are only interested in saving the generator active power, `pg`, and generator bus voltage magnitudes, `vm_gen`, the following call can be made,
+For example, if you are only interested in saving the generator active power, `p_gen`, and generator bus voltage magnitudes, `vm_gen`, the following call can be made,
 
 ```julia
-outputs = ["pg", "vm_gen"]
+outputs = ["p_gen", "vm_gen"]
 results = create_samples("pglib_opf_case5_pjm.m", N, output_vars=outputs)
 ```
 

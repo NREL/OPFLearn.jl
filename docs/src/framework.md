@@ -57,10 +57,10 @@ By default this sampling space is initialized with the following constraints,
 - The total active load is less than the sum of generator active power ratings.
 
 The default initial sampling space is impacted by the following arguments,
-- 'pd_max': The maximum active load for each load in the system. By default this is found with an optimization problem.
-- 'pd_min': The minimum active load for each load in the system. By default this is 0.
-- 'pf_min': A single number or array with values for each load in the system indicating the minimum power factor.
-- 'pf_lagging': A boolean indicating if the power factor of loads are only lagging (inductive), or can be lagging or leading (inductive or capacitive).
+- `pd_max`: The maximum active load for each load in the system. By default this is found with an optimization problem.
+- `pd_min`: The minimum active load for each load in the system. By default this is 0.
+- `pf_min`: A single number or array with values for each load in the system indicating the minimum power factor.
+- `pf_lagging`: A boolean indicating if the power factor of loads are only lagging (inductive), or can be lagging or leading (inductive or capacitive).
 
 ### Sampling Method
 
