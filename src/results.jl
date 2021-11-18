@@ -230,12 +230,12 @@ end
 "Takes a load vector, x, and puts the active and reactive load values into a new input object"
 function extract_load(x)
     num_loads = Int(length(x) / 2)
-    pl = x[1:num_loads]'
-    ql = x[num_loads + 1:end]'
+    pd = x[1:num_loads]'
+    qd = x[num_loads + 1:end]'
 
 	new_AC_inputs = Dict((
-					("pl", pl),
-					("ql", ql)
+					("pd", pd),
+					("qd", qd)
 					))
 	return new_AC_inputs
 end
@@ -381,9 +381,9 @@ end
 
 """ 
 Takes the results objects from a create samples run and converts them to a single array.
-Requires the save_order, an array of variables, to save from the results objects. Takes 
+Requires the save\_order, an array of variables, to save from the results objects. Takes 
 optional boolean arguments header, whether to include a header as the first row, and 
-imag_j, whether to convert complex data values to strings and replace 'im' with 'j' for
+imag\_j, whether to convert complex data values to strings and replace 'im' with 'j' for
 datasets that are to be used outside of the Julia environment.
 """
 function results_to_array(AC_inputs, AC_outputs, duals; 

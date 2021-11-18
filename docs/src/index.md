@@ -55,5 +55,5 @@ Pkg.test("OPFLearn"; test_args = [nproc])
 	OPFLearn can take a while to start up on the first run of each session as Julia takes a notable amount of time to precompile IPOPT. 
 
 !!! warn
-	In the current release of OPFLearn the distributed dataset creation tests can get stuck loading packages on distributed processes. 
+	In the current release of OPFLearn the distributed dataset creation tests can get stuck loading packages on distributed processors. 
 	If you run into this issue, you can inturrupt these tests with 'ctrl+c'. 

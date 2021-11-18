@@ -5,7 +5,7 @@ then starts creating samples with distributed processing
 function dist_create_samples(net::String, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=Inf, discard=false, variance=false,
 							input_vars=DEFAULT_INPUTS, output_vars=DEFAULT_OUTPUTS, dual_vars=DEFAULT_DUALS,
 							sampler=sample_polytope_cprnd, sampler_opts=Dict{Symbol,Any}()::Dict{Symbol}, A=[]::Array, b=[]::Array,
-							pl_max=nothing, pl_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, nproc=nothing, replace_samples=false,
+							pd_max=nothing, pd_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, nproc=nothing, replace_samples=false,
 							save_max_load=false, save_certs=false,
 							print_level=0, stat_track=false, save_while=false, save_infeasible=false, save_path="", net_path="",
 							model_type=PM.QCLSPowerModel, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL), 
@@ -15,7 +15,7 @@ function dist_create_samples(net::String, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=I
 	return dist_create_samples(net, K::Integer; U=U, S=S, V=V, max_iter=max_iter, T=T, discard=discard, variance=variance,
 							  input_vars=input_vars, output_vars=output_vars, dual_vars=dual_vars,
 							  sampler=sampler, sampler_opts=sampler_opts, A=A, b=b, reset_level=reset_level, 
-							  pl_max=pl_max, pl_min=pl_min, pf_min=pf_min, pf_lagging=pf_lagging, nproc=nproc, replace_samples=replace_samples,
+							  pd_max=pd_max, pd_min=pd_min, pf_min=pf_min, pf_lagging=pf_lagging, nproc=nproc, replace_samples=replace_samples,
 							  save_certs=save_certs, save_max_load=save_max_load,
 							  print_level=print_level, stat_track=stat_track, save_while=save_while,
 							  save_infeasible=save_infeasible, save_path=save_path, net_path=net_path,
@@ -41,12 +41,13 @@ Takes options to determine how to sample points, what information to save, and w
 - 'sampler_opts::Dict': a dictionary of optional arguments to pass to the sampler function.
 - 'A::Array': defines the initial sampling space polytope Ax<=b. If not provided, initializes to a default.
 - 'b::Array': defines the initial sampling space polytope Ax<=b. If not provided, initializes to a default.
-- 'pl_max::Array': the maximum active load values to use when initializing the sampling space and constraining the loads. If nothing, finds the maximum load at each bus with the given relaxed model type.
+- 'pd_max::Array': the maximum active load values to use when initializing the sampling space and constraining the loads. If nothing, finds the maximum load at each bus with the given relaxed model type.
+- 'pd_min::Array': the minimum active load values to use when initializing the sampling space and constraining the loads. If nothing, this is set to 0 for all loads.
 - 'pf_min::Array/Float:' the minimum power factor for all loads in the system (Number) or an array of minimum power factors for each load in the system.
 - 'pf_lagging::Bool': indicating if load power factors can be only lagging (True), or both lagging or leading (False).
 - 'reset_level::Integer': determines how to reset the load point to be inside the polytope before sampling. 2: Reset closer to nominal load & chebyshev center, 1: Reset closer to chebyshev center, 0: Reset at chebyshev center.
 - 'save_certs::Bool': specifies whether the sampling space, Ax<=b (A & b matrices) are saved to the results dictionary.
-- 'save_max_load::Bool': specifies whether the max active load demands used are saved to the results dictionary.
+- 'save\_max_load::Bool': specifies whether the max active load demands used are saved to the results dictionary.
 - 'model_type::Type': an abstract PowerModels type indicating the network model to use for the relaxed AC-OPF formulations (Max Load & Nearest Feasible)
 - 'r_solver': an optimizer constructor used for solving the relaxed AC-OPF optimization problems.
 - 'opf_solver': an optimizer constructor used to find the AC-OPF optimal solution for each sample.
@@ -62,12 +63,12 @@ Takes options to determine how to sample points, what information to save, and w
 See 'OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets'
 for more information on how the AC OPF datasets are created. 
 
-Modified from AgenerateACOPFsamples.m written by Ahmed Zamzam
+Modified from AgenerateACOPFsamples.m written by Ahmed S. Zamzam
 """
 function dist_create_samples(net::Dict, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=Inf, nproc=nothing, discard=false, variance=false,
 								input_vars=DEFAULT_INPUTS, output_vars=DEFAULT_OUTPUTS, dual_vars=DEFAULT_DUALS,
 								sampler=sample_polytope_cprnd, sampler_opts=Dict{Symbol,Any}()::Dict{Symbol}, A=[]::Array, b=[]::Array,
-								pl_max=nothing, pl_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, replace_samples=false,
+								pd_max=nothing, pd_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, replace_samples=false,
 								save_max_load=false, save_certs=false, 
 								print_level=0, stat_track=false, save_while=false, save_infeasible=false, save_path="", net_path="",
 								model_type=PM.QCLSPowerModel, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL),
@@ -95,7 +96,7 @@ function dist_create_samples(net::Dict, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf
 	end
 	
 	# Gather network information used during processing
-	A, b, x, results, fnfp_model, base_load_feasible, net_r = initialize(net, pf_min, pf_lagging, pl_max, pl_min,
+	A, b, x, results, fnfp_model, base_load_feasible, net_r = initialize(net, pf_min, pf_lagging, pd_max, pd_min,
 																		 input_vars, output_vars, dual_vars,
 																		 save_certs, save_infeasible, save_while,
 																		 stat_track, save_max_load, A, b,
@@ -124,7 +125,7 @@ end
 
 
 "UNUSED"
-function initialize_distributed(net, num_procs; pl_max=nothing, save_path="",  net_path="", save_while=false, A=[], b=[],
+function initialize_distributed(net, num_procs; pd_max=nothing, save_path="",  net_path="", save_while=false, A=[], b=[],
 							  line_constraints=false, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL),
 							  model_type=PM.QCLSPowerModel, reset_level=0, print_level=0)
 	net_name = net["name"]
@@ -139,10 +140,10 @@ function initialize_distributed(net, num_procs; pl_max=nothing, save_path="",  n
 	net_r = create_net_r(net, pf_min, pf_lagging, base_load)
 	
 	# Find the maximum servable load for each load bus in the system
-	pl_max = find_max_loads(pl_max, net_r, net_path, net_name, model_type, save_max_load, print_level)
+	pd_max = find_max_loads(pd_max, net_r, net_path, net_name, model_type, save_max_load, print_level)
 	
     # Initialize polytope, Ax <= b, parameter data structures
-	A, b = initialize_polytope(num_loads, pl_max, pg_max, A, b, sampler)
+	A, b = initialize_polytope(num_loads, pd_max, pg_max, A, b, sampler)
 	
 	# Create find nearest feasible point model without the objective
 	pm = PM.instantiate_model(net_r, model_type, build_opf_var_load)

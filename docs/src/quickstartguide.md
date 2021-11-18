@@ -9,6 +9,9 @@ N = 100
 results = create_samples("pglib_opf_case5_pjm.m", N)
 ```
 
+!!! note
+	When creating datasets for networks with greater than around 50 buses, runtimes can be improved by reducing the initial sampling space through either the 'pd_max', 'pd_min', or 'pf_min' arguments. OPFLearn has been tested on networks up to 300 buses with 'pd_max' specified as 2 times the nominal load at each bus. For 'pglib_opf_case300_ieee' a dataset of 15,000 samples took approximately a day to create using 40 distributed processors on an HPC node.
+
 ## Getting Results
 
 OPFLearn's create_samples functions return the resulting sample data as a dictionary. 
@@ -20,10 +23,10 @@ The input data, queried with `results["inputs"]`, is a dictionary containing inf
 The output data, queried with `results["outputs"]`, is a dictionary of AC OPF solutions corresponding to the input data load profiles.
 The dual data, queried with `results["duals"]`, is a dictionary containing information about the lagrangian dual values found when solving the AC OPF problem for each sample. Nonzero values (In OPFLearn values greater than 1e-5) indicate that the contraint associated with a dual value is active.
 
-For example, the following dictionary query can be used to find the active power, `pl`, at each load in the network for the first saved AC OPF sample,
+For example, the following dictionary query can be used to find the active power, `pd`, at each load in the network for the first saved AC OPF sample,
 
 ```julia
-results["inputs"]["pl"][1,:]
+results["inputs"]["pd"][1,:]
 ```
 
 Note that input and output data is in per unit. The base MVA can be found from the [PowerModels network data dictionary](https://lanl-ansi.github.io/PowerModels.jl/stable/network-data/).

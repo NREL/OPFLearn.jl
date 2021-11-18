@@ -5,7 +5,7 @@ then starts creating samples
 function create_samples(net::String, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=Inf, discard=false, variance=false,
 						input_vars=DEFAULT_INPUTS, output_vars=DEFAULT_OUTPUTS, dual_vars=DEFAULT_DUALS,
 						sampler=sample_polytope_cprnd, sampler_opts=Dict{Symbol,Any}()::Dict{Symbol}, A=[]::Array, b=[]::Array,
-						pl_max=nothing, pl_min=nothing, pf_min=0.7071, pf_lagging=true, save_certs=false, save_max_load=false,
+						pd_max=nothing, pd_min=nothing, pf_min=0.7071, pf_lagging=true, save_certs=false, save_max_load=false,
 						print_level=0, stat_track=false, save_while=false, save_infeasible=false, save_path="", net_path="",
 						model_type=PM.QCLSPowerModel, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL), 
 						opf_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL))
@@ -14,7 +14,7 @@ function create_samples(net::String, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T
 	return create_samples(net, K; U=U, S=S, V=V, max_iter=max_iter, T=T, discard=discard, variance=variance,
 							  input_vars=input_vars, output_vars=output_vars, dual_vars=dual_vars, A=A, b=b,
 							  sampler=sampler, sampler_opts=sampler_opts, save_max_load=save_max_load,
-							  pl_max=pl_max, pl_min=pl_min, pf_min=pf_min, pf_lagging=pf_lagging, save_certs=save_certs,
+							  pd_max=pd_max, pd_min=pd_min, pf_min=pf_min, pf_lagging=pf_lagging, save_certs=save_certs,
 							  print_level=print_level, stat_track=stat_track, save_while=save_while, 
 							  save_infeasible=save_infeasible, save_path=save_path, net_path=net_path,
 							  model_type=model_type, r_solver=r_solver, opf_solver=opf_solver)
@@ -44,12 +44,13 @@ julia> results = create_samples("case5.m", 100; T=1000, net_path="data")
 - 'sampler_opts::Dict': a dictionary of optional arguments to pass to the sampler function.
 - 'A::Array': defines the initial sampling space polytope Ax<=b. If not provided, initializes to a default.
 - 'b::Array': defines the initial sampling space polytope Ax<=b. If not provided, initializes to a default.
-- 'pl_max::Array': the maximum active load values to use when initializing the sampling space and constraining the loads. If nothing, finds the maximum load at each bus with the given relaxed model type.
+- 'pd_max::Array': the maximum active load values to use when initializing the sampling space and constraining the loads. If nothing, finds the maximum load at each bus with the given relaxed model type.
+- 'pd_min::Array': the minimum active load values to use when initializing the sampling space and constraining the loads. If nothing, this is set to 0 for all loads.
 - 'pf_min::Array/Float:' the minimum power factor for all loads in the system (Number) or an array of minimum power factors for each load in the system.
 - 'pf_lagging::Bool': indicating if load power factors can be only lagging (True), or both lagging or leading (False).
 - 'reset_level::Integer': determines how to reset the load point to be inside the polytope before sampling. 2: Reset closer to nominal load & chebyshev center, 1: Reset closer to chebyshev center, 0: Reset at chebyshev center.
 - 'save_certs::Bool': specifies whether the sampling space, Ax<=b (A & b matrices) are saved to the results dictionary.
-- 'save_max_load::Bool': specifies whether the max active load demands used are saved to the results dictionary.
+- 'save\_max_load::Bool': specifies whether the max active load demands used are saved to the results dictionary.
 - 'model_type::Type': an abstract PowerModels type indicating the network model to use for the relaxed AC-OPF formulations (Max Load & Nearest Feasible)
 - 'r_solver': an optimizer constructor used for solving the relaxed AC-OPF optimization problems.
 - 'opf_solver': an optimizer constructor used to find the AC-OPF optimal solution for each sample.
@@ -65,12 +66,12 @@ julia> results = create_samples("case5.m", 100; T=1000, net_path="data")
 See 'OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets'
 for more information on how the AC OPF datasets are created. 
 
-Modified from AgenerateACOPFsamples.m written by Ahmed Zamzam
+Modified from AgenerateACOPFsamples.m written by Ahmed S. Zamzam
 """
 function create_samples(net::Dict, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=Inf, discard=false, variance=false,
 							input_vars=DEFAULT_INPUTS, output_vars=DEFAULT_OUTPUTS, dual_vars=DEFAULT_DUALS,
 							sampler=sample_polytope_cprnd, sampler_opts=Dict{Symbol,Any}()::Dict{Symbol}, A=[]::Array, b=[]::Array,
-							pl_max=nothing, pl_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, save_certs=false, save_max_load=false,
+							pd_max=nothing, pd_min=nothing, pf_min=0.7071, pf_lagging=true, reset_level=0, save_certs=false, save_max_load=false,
 							print_level=0, stat_track=false, save_while=false, save_infeasible=false, save_path="", net_path="",
 							model_type=PM.QCLSPowerModel, r_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL), 
 							opf_solver=JuMP.optimizer_with_attributes(Ipopt.Optimizer, "tol" => TOL))
@@ -82,7 +83,7 @@ function create_samples(net::Dict, K=Inf; U=0.0, S=0.0, V=0.0, max_iter=Inf, T=I
 	end
 	
 	# Gather network information used during processing
-	A, b, x, results, fnfp_model, base_load_feasible, net_r = initialize(net, pf_min, pf_lagging, pl_max, pl_min,
+	A, b, x, results, fnfp_model, base_load_feasible, net_r = initialize(net, pf_min, pf_lagging, pd_max, pd_min,
 																		 input_vars, output_vars, dual_vars,
 																		 save_certs, save_infeasible, save_while,
 																		 stat_track, save_max_load, A, b,
@@ -240,7 +241,7 @@ end
 Gathers the network information needed during the dataset creation process, then initializes
 objects used to create and process load samples. 
 """
-function initialize(net, pf_min, pf_lagging, pl_max, pl_min, 
+function initialize(net, pf_min, pf_lagging, pd_max, pd_min, 
 					input_vars, output_vars, dual_vars,
 					save_certs, save_infeasible, save_while, stat_track, save_max_load, 
 					A, b, sampler, sampler_opts, 
@@ -259,19 +260,19 @@ function initialize(net, pf_min, pf_lagging, pl_max, pl_min,
 								 save_certs, save_infeasible, stat_track)
 	
     # Find the maximum servable load for each load bus in the system
-	if !isnothing(pl_min)
-		net_r["pd_min"] = pl_min
+	if !isnothing(pd_min)
+		net_r["pd_min"] = pd_min
 		if save_max_load
 			!haskey(results, "load_constraints") && (results["load_constraints"]=Dict())
-			results["load_constraints"]["pl_min"] = pl_min
+			results["load_constraints"]["pd_min"] = pd_min
 		end
 	end
-	pl_max = find_max_loads(pl_max, net_r, net_path, net_name, model_type, r_solver,
+	pd_max = find_max_loads(pd_max, net_r, net_path, net_name, model_type, r_solver,
 							save_max_load, results, save_while, print_level)
 
 	
     # Initialize polytope, Ax <= b, parameter data structures
-	A, b = initialize_polytope(num_loads, pl_max, pl_min, pf_min, pf_lagging, pg_max, 
+	A, b = initialize_polytope(num_loads, pd_max, pd_min, pf_min, pf_lagging, pg_max, 
 							   A, b, sampler, sampler_opts)
 	
 	# Create find nearest feasible point model without the objective
@@ -297,36 +298,36 @@ constrains the minimum reactive demand to zero,
 constrains the reactive demand with the given minimum power factor,
 constrains the maximum total active load to the sum of generator active power ratings.
 """
-function initialize_polytope(num_loads, pl_max, pl_min, pf_min, pf_lagging, pg_max, A=[], b=[], 
+function initialize_polytope(num_loads, pd_max, pd_min, pf_min, pf_lagging, pg_max, A=[], b=[], 
 							 sampler=sample_polytope_cprnd, sampler_opts=Dict())
 	if isempty(A) & isempty(b)
-		isnothing(pl_min) && (pl_min=zeros((num_loads, 1)))
+		isnothing(pd_min) && (pd_min=zeros((num_loads, 1)))
 		pf_min isa Number && (pf_min = ones(num_loads) .* pf_min)
 		d = tan.(acos.(pf_min))
 		
 		# Max active demand constaint
-		max_pl_constr = hcat(I(num_loads), zeros((num_loads, num_loads)))
+		max_pd_constr = hcat(I(num_loads), zeros((num_loads, num_loads)))
 		# Min active demand constraint
-		min_pl_constr = hcat(-I(num_loads), zeros((num_loads, num_loads)))
+		min_pd_constr = hcat(-I(num_loads), zeros((num_loads, num_loads)))
 		# Max reactive demand constraint
-		max_ql_constr = hcat(-I(num_loads).*d, I(num_loads))
+		max_qd_constr = hcat(-I(num_loads).*d, I(num_loads))
 		# Min reactive demand constraint
 		if pf_lagging
-			min_ql_constr = hcat(zeros((num_loads, num_loads)), -I(num_loads))
+			min_qd_constr = hcat(zeros((num_loads, num_loads)), -I(num_loads))
 		else
-			min_ql_constr = hcat(I(num_loads).*d, -I(num_loads))
+			min_qd_constr = hcat(I(num_loads).*d, -I(num_loads))
 		end
 		# Total active demand constraint
-		tot_pl_constr = hcat(ones((1, num_loads)), zeros((1, num_loads)))
+		tot_pd_constr = hcat(ones((1, num_loads)), zeros((1, num_loads)))
 		
-		A = vcat(max_pl_constr,
-				 min_pl_constr,
-				 max_ql_constr,
-				 min_ql_constr,
-				 tot_pl_constr,
+		A = vcat(max_pd_constr,
+				 min_pd_constr,
+				 max_qd_constr,
+				 min_qd_constr,
+				 tot_pd_constr,
 				 )
-		b = vcat(pl_max,
-				 pl_min,
+		b = vcat(pd_max,
+				 pd_min,
 				 zeros((num_loads, 1)),
 				 zeros((num_loads, 1)),
 				 [sum(pg_max)],

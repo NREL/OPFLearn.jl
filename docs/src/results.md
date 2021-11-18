@@ -19,31 +19,31 @@ For example, the inputs, `results["inputs"]`, would return the following diction
 
 ```
 {
-"pl": [...],
-"ql": [...],
+"pd": [...],
+"qd": [...],
 }
 ```
 
 Then looking at the data for the active load with key "pl", `results["inputs"]["pl"]`, would return an array structured as follows,
 
 ```
-sample 1: [pl_1, pl_2, ..., pl_n]
-sample 2: [pl_1, pl_2, ..., pl_n]
-sample 3: [pl_1, pl_2, ..., pl_n]
+sample 1: [pd_1, pd_2, ..., pd_n]
+sample 2: [pd_1, pd_2, ..., pd_n]
+sample 3: [pd_1, pd_2, ..., pd_n]
 ...
-sample K: [pl_1, pl_2, ..., pl_n]
+sample K: [pd_1, pd_2, ..., pd_n]
 ```
 
-where pl_n indicates the value of the active power demand at bus n. 
+where pd_n indicates the value of the active power demand at bus n. 
 
 ### Specifying Results
 
 By default input, output, and dual result data for all variables are saved to the results object. 
 To reduce the size of the result object a subsection of the variables to save can be provided in the create samples call. 
-For example, if you are only interested in saving the generator active power, `pg`, and generator bus voltage magnitudes, `vm_gen`, the following call can be made,
+For example, if you are only interested in saving the generator active power, `pg`, generator bus voltage magnitudes, `vm_gen`, and the AC OPF objective value, "total_cost", the following call can be made,
 
 ```
-outputs = ["pg", "vm_gen"]
+outputs = ["pg", "vm_gen", "total_cost"]
 results = create_samples("pglib_opf_case5_pjm.m", N, output_vars=outputs)
 ```
 
@@ -62,21 +62,21 @@ All the available result variables can be seen in this table,
 	
     <tr>
 		<td>
-			<ul><li>Load Active Power (pl)</li><li>Load Reactive Power (ql)
+			<ul><li>Load Active Power (pd)</li><li>Load Reactive Power (qd)
 			</li></ul>
 		</td>
 		<td>	
-			<ul><li>Generator Active Power (pg)</li><li>Generator Reactive Power (qg)</li><li>Generator Bus Voltage Magnitude (vm_gen)</li><li>Bus Complex Voltage (v_bus)</li><li>Bus Voltage Magnitude (vm)</li><li>Bus Voltage Angle (va)</li><li>Edge To Active Power (p_to)</li><li>Edge From Active Power (p_fr)</li><li>Edge To Reactive Power (q_to)</li><li>Edge From Reactive Power (q_fr)</li></ul>
+			<ul><li>Generator Active Power (p_gen)</li><li>Generator Reactive Power (q_gen)</li><li>Generator Bus Voltage Magnitude (vm_gen)</li><li>Bus Complex Voltage (v_bus)</li><li>Bus Voltage Magnitude (vm_bus)</li><li>Bus Voltage Angle (va_bus)</li><li>Edge To Active Power (p_to)</li><li>Edge From Active Power (p_fr)</li><li>Edge To Reactive Power (q_to)</li><li>Edge From Reactive Power (q_fr)</li></ul>
 		</td>
 		<td>
-			<ul><li>Min Bus Voltage (v_min)</li><li>Max Bus Voltage (v_max)</li><li>Min Generator Active Power (pg_min)</li><li>Max Generator Active Power (pg_max)</li><li>Min Generator Reactive Power (qg_min)</li><li>Max Generator Reactive Power (qg_max)</li><li>Min Edge To Active Power (p_to_min)</li><li>Max Edge To Active Power (p_to_max)</li><li>Min Edge From Active Power (p_fr_min)</li><li>Max Edge From Active Power (p_fr_max)</li><li>Min Edge From Reactive Power (q_fr_min)</li><li>Max Edge From Reactive Power (q_fr_max)</li></ul>
+			<ul><li>Min Bus Voltage (v_min)</li><li>Max Bus Voltage (v_max)</li><li>Min Generator Active Power (pg_min)</li><li>Max Generator Active Power (pg_max)</li><li>Min Generator Reactive Power (qg_min)</li><li>Max Generator Reactive Power (qg_max)</li><li>Max Edge To Active Power (pto_max)</li><li>Max Edge From Active Power (pfr_max)</li><li>Max Edge To Reactive Power (qto_max)</li><li>Max Edge From Reactive Power (qfr_max)</li></ul>
 		</td>
 	</tr>
   </tbody>
 </table>
 ```
 
-By default all variables are stored to the results object, except for the bus voltage magnitude and bus voltage angle.
+By default all variables are stored to the results object, except for the bus complex voltage and total network cost. 
 
 ### Converting to an Array
 
@@ -140,8 +140,8 @@ To save the maximum loads used to initialize the input load space the `save_max_
 results = create_samples(net_file, K, save_max_load=true)
 ```
 
-This will store an array of maximum loads found at each bus in the network at `results["load_constraints"]["pl_max"]`. 
-This array can be provided as an argument, `pl_max`, to a dataset creation function, when using the same network, to reduce the dataset creation initialization time.
+This will store an array of maximum loads found at each bus in the network at `results["load_constraints"]["pd_max"]`. 
+This array can be provided as an argument, `pd_max`, to a dataset creation function, when using the same network, to reduce the dataset creation initialization time.
 
 ### Infeasible Inputs
 

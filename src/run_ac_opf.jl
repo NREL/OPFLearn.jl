@@ -46,8 +46,8 @@ function run_ac_opf(network_data::Dict; print_level=0, from_py=false,
 	v = vm.*exp.(1im*deg2rad.(va))
 	vmg = vm[gen_bus_nums]
 	
-	primals["vm"] = Array(vm')
-	primals["va"] = Array(va')
+	primals["vm_bus"] = Array(vm')
+	primals["va_bus"] = Array(va')
 	primals["vm_gen"] = Array(vmg')
 	primals["v_bus"] = Array(transpose(v))
 
@@ -60,8 +60,8 @@ function run_ac_opf(network_data::Dict; print_level=0, from_py=false,
 		qg[gen_num] = res_gen[gen_idx]["qg"]
 	end
 	
-	primals["pg"] = Array(pg')
-	primals["qg"] = Array(qg')
+	primals["p_gen"] = Array(pg')
+	primals["q_gen"] = Array(qg')
 	
 	net_branch = network_data["branch"]
 	num_branches = length(net_branch)
@@ -82,6 +82,7 @@ function run_ac_opf(network_data::Dict; print_level=0, from_py=false,
 	primals["p_to"] = Array(p_to')
 	primals["q_fr"] = Array(q_fr')
 	primals["q_to"] = Array(q_to')
+	primals["total_cost"] = Array([results["objective"]])
 	
 	if print_level > 1
 		println(string("OPF: ",results["termination_status"]))
@@ -140,10 +141,10 @@ function run_ac_opf(network_data::Dict; print_level=0, from_py=false,
 				 "pg_max" => Array(pg_max'),
 				 "qg_min" => Array(qg_min'),
 				 "qg_max" => Array(qg_max'),
-				 "p_to_max" => Array(p_to_max'),
-				 "q_to_max" => Array(q_to_max'),
-				 "p_fr_max" => Array(p_fr_max'),
-				 "q_fr_max" => Array(q_fr_max'),
+				 "pto_max" => Array(p_to_max'),
+				 "qto_max" => Array(q_to_max'),
+				 "pfr_max" => Array(p_fr_max'),
+				 "qfr_max" => Array(q_fr_max'),
 				 )
 	
 	results = (primals, duals)

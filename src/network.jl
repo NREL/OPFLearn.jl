@@ -64,25 +64,25 @@ end
 
 
 ""
-function find_max_loads(pl_max, net_r, net_path, net_name, model_type, r_solver,
+function find_max_loads(pd_max, net_r, net_path, net_name, model_type, r_solver,
 						save_max_load, results, save_while, print_level)
-	if isnothing(pl_max)
+	if isnothing(pd_max)
 		max_load_file = joinpath(net_path, net_name * "_found_max_load.csv")
 		if isfile(max_load_file )
-			pl_max = readdlm(max_load_file , ',')
+			pd_max = readdlm(max_load_file , ',')
 		else
-			pm_pl_max = PM.instantiate_model(net_r, model_type, build_opf_var_load)
-			pl_max, status = find_max_loads(pm_pl_max, print_level=print_level, solver=r_solver)
+			pm_pd_max = PM.instantiate_model(net_r, model_type, build_opf_var_load)
+			pd_max, status = find_max_loads(pm_pd_max, print_level=print_level, solver=r_solver)
 								   
-			save_while && writedlm(max_load_file, pl_max, ',')
+			save_while && writedlm(max_load_file, pd_max, ',')
 		end
 	end
-	net_r["pd_max"] = pl_max
+	net_r["pd_max"] = pd_max
 	if save_max_load
 		!haskey(results, "load_constraints") && (results["load_constraints"]=Dict())
-		results["load_constraints"]["pl_max"] = pl_max
+		results["load_constraints"]["pd_max"] = pd_max
 	end
-	return pl_max
+	return pd_max
 end
 
 

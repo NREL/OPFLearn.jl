@@ -57,21 +57,24 @@ By default this sampling space is initialized with the following constraints,
 - The total active load is less than the sum of generator active power ratings.
 
 The default initial sampling space is impacted by the following arguments,
-- 'pl_max': The maximum active load for each load in the system. By default this is found with an optimization problem.
-- 'pl_min': The minimum active load for each load in the system. By default this is 0.
+- 'pd_max': The maximum active load for each load in the system. By default this is found with an optimization problem.
+- 'pd_min': The minimum active load for each load in the system. By default this is 0.
 - 'pf_min': A single number or array with values for each load in the system indicating the minimum power factor.
 - 'pf_lagging': A boolean indicating if the power factor of loads are only lagging (inductive), or can be lagging or leading (inductive or capacitive).
 
 ### Sampling Method
 
 A function for sampling load profiles from the sample space can be provided to the dataset creation functions through the `sampler` argument.
-This function must accept four required arguments A, b, x0, n_samples, where A & b define the sampling space as a polytope (Ax<b), x0 is a point within the sampling space, and n_samples is the number of samples to produce.
+This function must accept four required arguments A, b, x0, n\_samples, where A & b define the sampling space as a polytope (Ax<b), x0 is a point within the sampling space, and n\_samples is the number of samples to produce.
 Additionally the function can accept any number of optional arguments, which can be provided through the `sampler_opts` arguments as a dictionary mapping optional argument names as symbols to the desired parameter (e.g. :method => "hitandrun").
 
 By default OPFLearn uses a [hit and run sample method translated from MATLAB (Copyright (c) 2011, Tim Benham).](https://www.mathworks.com/matlabcentral/fileexchange/34208-uniform-distribution-over-a-convex-polytope?s_tid=prof_contriblnk)
 
 !!! note
 	Note only the hit and run methods (hitandrun & achr) in the OPFLearn [`sample_polytope_cprnd`](@ref) function have been extensively tested.
+
+!!! warn
+	When creating datasets for networks with greater than around 50 loads, the default sampling method can become slow do to the high dimensionality of the sampling space and the often large number of infeasibility certificates found. Changing the sampler or sampling parameters can help speed up sampling. 
 
 ### AC OPF Relaxations
 

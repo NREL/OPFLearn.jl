@@ -26,9 +26,9 @@ The distributed sample creation function has the same arguments as the single pr
 - `replace_samples` specifies whether when a new infeasibility certificate is found if the samples in the sample queue are replaced.
 
 !!! warn
-	The replace samples option has not been fully tested and may cause the script to freeze.
+	The replace samples option has not been fully tested/debugged and may cause the script to freeze.
 
-Distributed processing splits the sampling / result handling from the sample processing with one processor handling sampling and the remaining processors processing samples.
+Distributed processing splits the sampling/result handling from the sample processing with one processor handling sampling and the remaining processors processing samples.
 
 !!! note
-	A significant increase in speed is not seen unless more than 3 processors are used. On the other hand, specifying more processors than are available will likely result in an error when loading OPFLearn on distributed processes.
+	A significant increase in speed is not seen unless more than 3 processors are used. On the other hand, specifying more processors than are available may result in an error when loading OPFLearn on distributed processes.

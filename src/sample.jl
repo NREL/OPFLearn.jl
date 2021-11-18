@@ -35,30 +35,6 @@ function chebyshev_center(A, b, opt=Ipopt.Optimizer)
 end
 
 
-
-""" 
-# NOT WORKING
-Finds the maximum volume inscribed ellipsoids in the given polytope Ax<b
-"""
-function maximum_volume_inscribed_ellipsoid(A, b, opt=GLPK.Optimizer)
-    m, p = size(A)
-	
-	model = JuMP.Model(opt)
-	JuMP.set_silent(model)
-	JuMP.@variable(model, 0 <= d[1:p])
-	JuMP.@variable(model, 0 <= B[1:p,1:p])
-	for i in 1:m
-		#JuMP.@constraint(model, norm(B * A[i,:]) + dot(A[i,:], d) .<= b[i])
-		JuMP.@constraint(model, [b[i] - dot(A[i,:], d) ; B * A[i,:]] in SecondOrderCone())
-	end
-	JuMP.@objective(model, Max, logdet(B)) 
-    JuMP.optimize!(model)
-
-	center = value.(d)
-    return center, radius
-end
-
-
 """ 
 Translated to Julia and modified based on:
 https://www.mathworks.com/matlabcentral/fileexchange/34208-uniform-distribution-over-a-convex-polytope
@@ -75,8 +51,7 @@ CPRND Draw from the uniform distribution over a convex polytope.
 - 'method::String': 'gibbs': Gibbs sampler, 'hitandrun': Hit and Run, 'achr': Adaptive Centering Hit-and-Run
 - 'iso::Integer': Isotropic Transformation (0: no xfrm, 1: Xfrm during runup, 2: Xfrm throughout sampling
 - 'runup::Integer': # of initial iterations of the algorithm in the untransformed space for gibbs or hitandrun
-- 'discard::Integer': # of initial samples (post run_up) to discard. Randomly selects n_samples from the 
-		discard + n_samples samples.
+- 'discard::Integer': # of initial samples (post runup) to discard. Randomly selects n_samples from the discard + n_samples samples.
 ...
 """
 function sample_polytope_cprnd(A, b, x0, n_samples=1; seed=nothing, method="achr", runup=nothing, iso=nothing, discard=nothing)
@@ -222,10 +197,10 @@ end
 
 """ 
 Samples from a uniform distribution of the given percentage 
-around the given base load, x_0 = (pl_0 + ql_0). Power factors
+around the given base load, x\_0 = (pl\_0 + ql\_0). Power factors
 are held constant.
 
-x_il = U[0.8 x_i0, 1.2 x_i0] for all i in load buses
+x\_il = U[0.8 x\_i0, 1.2 x\_i0] for all i in load buses
 """
 function sample_uniform(nominal_load; dist_perc=0.2)
 	@assert length(nominal_load) % 2 == 0 "Nominal load profile must contain an even number of load values (active and reactive load pairs). Currently contains $(length(nominal_load))."
@@ -260,9 +235,9 @@ load of the sample. By default the pf_range refers to lagging
 power factors. If a value larger than 1.0 is given in the range,
 it will be converted to a leading power factor of pf = (1.0 - x).
 
-p_il = U[(1-dist) * p_i0, (1+dist) * p_i0] for all i in load buses
-d_il = U[pf_range] for all i in load buses
-q_il = tan(d_il) * p_il
+- p/_il = U[(1-dist) * p/_i0, (1+dist) * p/_i0] for all i in load buses
+- d/_il = U[pf/_range] for all i in load buses
+- q/_il = tan(d/_il) * p/_il
 """
 function sample_uniform_w_pf(nominal_load; dist_perc=0.2, pf_range=(0.8,1.0))
 	@assert length(nominal_load) % 2 == 0 "Nominal load profile must contain an even number of load values (active and reactive load pairs). Currently contains $(length(nominal_load))."

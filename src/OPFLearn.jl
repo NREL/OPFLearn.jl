@@ -44,23 +44,23 @@ const NW_DEFAULT = PM.nw_id_default # The first network index for a PowerModels 
 const SOLVED_STATUSES = [MOI.OPTIMAL, MOI.LOCALLY_SOLVED, MOI.ALMOST_OPTIMAL, MOI.ALMOST_LOCALLY_SOLVED]
 
 const EPS = 1e-5
-const STAT_ORDER = ["pl", "ql", "pg", "vm_gen"]
-const DEFAULT_INPUTS = ["pl", "ql"] 
-const DEFAULT_OUTPUTS = ["pg", "qg", "vm_gen", "v_bus", 
-						 "p_to", "q_to", "p_fr", "q_fr"]  
+const STAT_ORDER = ["pd", "qd", "pg", "vm_gen"]
+const DEFAULT_INPUTS = ["pd", "qd"]
+const DEFAULT_OUTPUTS = ["p_gen", "q_gen", "vm_gen", "vm_bus", "va_bus", 
+						 "p_to", "q_to", "p_fr", "q_fr"]
 # "vm" and "va" can be added for voltage magnitudes and angles at each bus
 const DEFAULT_DUALS = ["v_min", "v_max", "pg_min", "pg_max", "qg_min", "qg_max",
-					   "p_to_max", "q_to_max", "p_fr_max", "q_fr_max"]
+					   "pto_max", "qto_max", "pfr_max", "qfr_max"]
 
 const DEFAULT_SAVE_ORDER = vcat(DEFAULT_INPUTS, DEFAULT_OUTPUTS, DEFAULT_DUALS)
 
-const ELEMENT_LABELS = Dict(zip(append!(DEFAULT_SAVE_ORDER, ["vm", "va"]), 
-				    ["load", "load", 
-					 "gen", "gen", "gen", "bus", 
+const ELEMENT_LABELS = Dict(zip(append!(DEFAULT_SAVE_ORDER, ["v_bus", "total_cost"]), 
+				    ["load", "load",
+					 "gen", "gen", "gen", "bus", "bus",
 					 "line", "line", "line", "line",
 					 "bus", "bus", "gen", "gen", "gen", "gen",
 					 "line", "line", "line", "line",
-					 "bus", "bus"]))
+					 "bus", "net"]))
 
 const VAR_SIZES = Dict([
 					 ("v_min", [:n_buses]),
@@ -69,21 +69,22 @@ const VAR_SIZES = Dict([
 					 ("pg_max", [:n_gens, :n_ext]),
 					 ("qg_min", [:n_gens, :n_ext]),
 					 ("qg_max", [:n_gens, :n_ext]),
-					 ("p_fr_max", [:n_branches]),
-					 ("p_to_max", [:n_branches]),
-					 ("q_fr_max", [:n_branches]),
-					 ("q_to_max", [:n_branches]),
-					 ("pl", [:n_loads]),
-					 ("ql", [:n_loads]),
-					 ("pg", [:n_gens, :n_ext]),
-					 ("qg", [:n_gens, :n_ext]),
+					 ("pfr_max", [:n_branches]),
+					 ("pto_max", [:n_branches]),
+					 ("qfr_max", [:n_branches]),
+					 ("qto_max", [:n_branches]),
+					 ("pd", [:n_loads]),
+					 ("qd", [:n_loads]),
+					 ("p_gen", [:n_gens, :n_ext]),
+					 ("q_gen", [:n_gens, :n_ext]),
 					 ("v_bus", [:n_buses]),
 					 ("vm_gen", [:n_gens, :n_ext]),
-					 ("vm", [:n_buses]),
-					 ("va", [:n_buses]),
+					 ("vm_bus", [:n_buses]),
+					 ("va_bus", [:n_buses]),
 					 ("p_fr", [:n_branches]),
 					 ("p_to", [:n_branches]),
 					 ("q_fr", [:n_branches]),
+					 ("q_to", [:n_branches]),
 					 ("q_to", [:n_branches]),
 					 ])
 
