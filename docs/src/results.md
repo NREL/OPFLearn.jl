@@ -43,7 +43,7 @@ To reduce the size of the result object a subsection of the variables to save ca
 For example, if you are only interested in saving the generator active power, `pg`, generator bus voltage magnitudes, `vm_gen`, and the AC OPF objective value, "total_cost", the following call can be made,
 
 ```
-outputs = ["pg", "vm_gen", "total_cost"]
+outputs = ["p_gen", "vm_gen", "total_cost"]
 results = create_samples("pglib_opf_case5_pjm.m", N, output_vars=outputs)
 ```
 

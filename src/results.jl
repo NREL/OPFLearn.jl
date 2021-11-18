@@ -17,7 +17,8 @@ function ACOutputs(output_vars, n_buses, n_gens, n_ext, n_branches)
 	element_sizes = Dict([(:n_buses, n_buses),
 						 (:n_gens, n_gens),
 						 (:n_ext, n_ext),
-						 (:n_branches, n_branches)
+						 (:n_branches, n_branches),
+						 (:n_nets, 1),  # TODO: This would need to change if using multinetwork models?
 						])
 	
 	AC_outputs= Dict()
@@ -381,9 +382,9 @@ end
 
 """ 
 Takes the results objects from a create samples run and converts them to a single array.
-Requires the save\_order, an array of variables, to save from the results objects. Takes 
+Requires the save\\_order, an array of variables, to save from the results objects. Takes 
 optional boolean arguments header, whether to include a header as the first row, and 
-imag\_j, whether to convert complex data values to strings and replace 'im' with 'j' for
+imag\\_j, whether to convert complex data values to strings and replace 'im' with 'j' for
 datasets that are to be used outside of the Julia environment.
 """
 function results_to_array(AC_inputs, AC_outputs, duals; 

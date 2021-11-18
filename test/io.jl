@@ -3,7 +3,7 @@
 		file_tmp = joinpath(filedir, filename)
 		file_data = DelimitedFiles.readdlm(file_tmp, ',')
 		
-		num_samples = size(results["inputs"]["pl"], 1)
+		num_samples = size(results["inputs"]["pd"], 1)
 		input_size = sum([size(x, 2) for x in values(results["inputs"])])
 		output_size = sum([size(x, 2) for x in values(results["outputs"])])
 		dual_size = sum([size(x, 2) for x in values(results["duals"]) if x isa Array]) - 1 # UAS not a var
@@ -26,8 +26,8 @@
 	end
 	
 	@testset "5-bus case file csv check with specified vars" begin
-		input_vars = ["pl", "ql"]
-		output_vars = ["pg", "qg"]
+		input_vars = ["pd", "qd"]
+		output_vars = ["p_gen", "q_gen"]
 		dual_vars = ["v_max"]
 		save_order = vcat(input_vars, output_vars, dual_vars)
 		data_dir = "data"

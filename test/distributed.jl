@@ -13,10 +13,10 @@
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 100
 		results = dist_create_samples(net_file, K, net_path="data")
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 3
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 5
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 3
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 5
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 5
     end
@@ -32,9 +32,9 @@
 		# Import functions used on all worker processes
 		Distributed.@everywhere using OPFLearn
 	
-		input_vars = ["pl", "ql"]
-		output_vars = ["pg", "vm_gen"]
-		dual_vars = ["v_min", "qg_min", "p_to_max"]
+		input_vars = ["pd", "qd"]
+		output_vars = ["p_gen", "vm_gen"]
+		dual_vars = ["v_min", "qg_min", "pto_max"]
 		
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 100

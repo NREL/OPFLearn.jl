@@ -50,7 +50,7 @@ julia> results = create_samples("case5.m", 100; T=1000, net_path="data")
 - 'pf_lagging::Bool': indicating if load power factors can be only lagging (True), or both lagging or leading (False).
 - 'reset_level::Integer': determines how to reset the load point to be inside the polytope before sampling. 2: Reset closer to nominal load & chebyshev center, 1: Reset closer to chebyshev center, 0: Reset at chebyshev center.
 - 'save_certs::Bool': specifies whether the sampling space, Ax<=b (A & b matrices) are saved to the results dictionary.
-- 'save\_max_load::Bool': specifies whether the max active load demands used are saved to the results dictionary.
+- 'save\\_max_load::Bool': specifies whether the max active load demands used are saved to the results dictionary.
 - 'model_type::Type': an abstract PowerModels type indicating the network model to use for the relaxed AC-OPF formulations (Max Load & Nearest Feasible)
 - 'r_solver': an optimizer constructor used for solving the relaxed AC-OPF optimization problems.
 - 'opf_solver': an optimizer constructor used to find the AC-OPF optimal solution for each sample.

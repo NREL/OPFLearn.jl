@@ -86,6 +86,7 @@ const VAR_SIZES = Dict([
 					 ("q_fr", [:n_branches]),
 					 ("q_to", [:n_branches]),
 					 ("q_to", [:n_branches]),
+					 ("total_cost", [:n_nets]),
 					 ])
 
 end

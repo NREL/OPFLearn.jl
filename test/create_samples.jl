@@ -3,10 +3,10 @@
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 10
 		results = create_samples(net_file, K, net_path="data")
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 3
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 5
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 3
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 5
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 5
     end
@@ -15,10 +15,10 @@
 		net_file = "pglib_opf_case30_ieee.m"
 		K = 10
 		results = create_samples(net_file, K, net_path="data")
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 21
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 6
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 21
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 6
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 30
     end
@@ -36,9 +36,9 @@ end
     end
 
     @testset "5-bus case file, specified variables" begin
-		input_vars = ["pl", "ql"]
-		output_vars = ["pg", "vm_gen"]
-		dual_vars = ["v_min", "qg_min", "p_to_max"]
+		input_vars = ["pd", "qd"]
+		output_vars = ["p_gen", "vm_gen"]
+		dual_vars = ["v_min", "qg_min", "pto_max"]
 		
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 10
@@ -53,9 +53,9 @@ end
     end
 	
     @testset "14-bus case file, specified variables" begin
-		input_vars = ["pl"]
-		output_vars = ["qg"]
-		dual_vars = ["v_min", "qg_min", "p_to_max"]
+		input_vars = ["pd"]
+		output_vars = ["q_gen"]
+		dual_vars = ["v_min", "qg_min", "pto_max"]
 		
 		net_file = "pglib_opf_case14_ieee.m"
 		K = 10
@@ -70,8 +70,8 @@ end
     end
 	
 	@testset "14-bus case file, empty duals" begin
-		input_vars = ["pl", "ql"]
-		output_vars = ["pg", "vm_gen"]
+		input_vars = ["pd", "qd"]
+		output_vars = ["p_gen", "vm_gen"]
 		dual_vars = []
 		
 		net_file = "pglib_opf_case14_ieee.m"
@@ -93,10 +93,10 @@ end
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 10
 		results = create_samples(net_file, K, net_path="data", save_certs=true)
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 3
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 5
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 3
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 5
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 5
 		@test haskey(results, "polytope")
@@ -106,10 +106,10 @@ end
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 10
 		results = create_samples(net_file, K, net_path="data", stat_track=1)
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 3
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 5
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 3
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 5
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 5
 		@test haskey(results, "stats")
@@ -119,10 +119,10 @@ end
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 10
 		results = create_samples(net_file, K, net_path="data", save_infeasible=true)
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 3
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 5
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 3
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 5
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 5
 		@test haskey(results, "infeasible_inputs")
@@ -132,10 +132,10 @@ end
 		net_file = "pglib_opf_case5_pjm.m"
 		K = 10
 		results = create_samples(net_file, K, net_path="data", save_max_load=true)
-        @test size(results["inputs"]["pl"],1) == K
-		@test size(results["inputs"]["pl"],2) == 3
-		@test size(results["outputs"]["pg"],1) == K
-		@test size(results["outputs"]["pg"],2) == 5
+        @test size(results["inputs"]["pd"],1) == K
+		@test size(results["inputs"]["pd"],2) == 3
+		@test size(results["outputs"]["p_gen"],1) == K
+		@test size(results["outputs"]["p_gen"],2) == 5
 		@test size(results["duals"]["v_max"],1) == K
 		@test size(results["duals"]["v_max"],2) == 5
 		@test haskey(results, "load_constraints")
