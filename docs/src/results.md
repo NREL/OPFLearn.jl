@@ -24,7 +24,7 @@ For example, the inputs, `results["inputs"]`, would return the following diction
 }
 ```
 
-Then looking at the data for the active load with key "pl", `results["inputs"]["pl"]`, would return an array structured as follows,
+Then looking at the data for the active load with key "pd", `results["inputs"]["pd"]`, would return an array structured as follows,
 
 ```
 sample 1: [pd_1, pd_2, ..., pd_n]

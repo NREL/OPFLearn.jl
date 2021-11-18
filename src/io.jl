@@ -57,6 +57,11 @@ function build_header(AC_inputs, AC_outputs, duals, save_order)
 	
 	all_data = merge(AC_inputs, AC_outputs, duals)
 	
+	# Remove any keys in save_order that are not in the given results
+	all_data_keys = keys(all_data)
+	matched_label_indxs = [key in all_data_keys for key in save_order]
+	save_order = save_order[matched_label_indxs]
+	
 	for key in save_order
 		element = ELEMENT_LABELS[key]
 		append!(header, ["$(element)$(i):"*string(key) for i in 1:size(all_data[key],2)])

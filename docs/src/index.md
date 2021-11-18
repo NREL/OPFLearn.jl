@@ -11,7 +11,8 @@ CurrentModule = OPFLearn
 It was developed to provide researchers with a standardized way to efficiently create AC OPF datasets that are representative of more of the AC OPF feasible load space compared to typical dataset creation methods.
 The OPFLearn dataset creation method uses a relaxed AC OPF formulation to reduce the volume of the unclassified input space throughout the dataset creation process. 
 Over time this input space tightens around the relaxed AC OPF feasible region to increase the percentage of feasible load profiles found while uniformly sampling the input space. Load samples are processed using AC OPF formulations from [PowerModels.jl](https://github.com/lanl-ansi/PowerModels.jl).
-More information on the dataset creation method can be found in our publication, "OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets". A Python interface for OPFLearn.jl is available at [opflearn](https://github.com/TragerJoswig-Jones/opflearn).
+More information on the dataset creation method can be found in our paper, ["OPF-Learn: An Open-Source Framework for Creating Representative AC Optimal Power Flow Datasets"](https://arxiv.org/abs/2111.01228). 
+A Python interface for OPFLearn.jl is available at [opflearn](https://github.com/TragerJoswig-Jones/opflearn).
 
 ## Installation
 

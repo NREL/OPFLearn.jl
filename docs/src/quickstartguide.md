@@ -10,7 +10,7 @@ results = create_samples("pglib_opf_case5_pjm.m", N)
 ```
 
 !!! note
-	When creating datasets for networks with greater than around 50 buses, runtimes can be improved by reducing the initial sampling space through either the 'pd_max', 'pd_min', or 'pf_min' arguments. OPFLearn has been tested on networks up to 300 buses with 'pd_max' specified as 2 times the nominal load at each bus. For 'pglib_opf_case300_ieee' a dataset of 15,000 samples took approximately a day to create using 40 distributed processors on an HPC node.
+	When creating datasets for networks with greater than around 50 buses, runtimes can be improved by reducing the initial sampling space through either the `pd_max`, `pd_min`, or `pf_min` arguments. OPFLearn has been tested on networks up to 300 buses with `pd_max` specified as 2 times the nominal load at each bus. For the 'pglib\_opf\_case300\_ieee' test network a dataset of 20,000 samples took approximately a day to create using 40 distributed processors on an HPC node.
 
 ## Getting Results
 
@@ -53,3 +53,9 @@ See the [Additional Results](@ref additional_results) section for instructions o
 
 If there are multiple processors available, the runtime to create samples can be reduced by using distributed processing. 
 OPFLearn has addition functions for creating AC OPF datasets that utilize distributed processing, which can be read about in the [Distributed Processing](@ref distributed_processing) section.
+
+
+## Issues & Questions
+
+If you have any issues while using OPFLearn or think of any features that would be useful to you, please submit a new issue [here](https://github.com/NREL/OPFLearn.jl/issues).
+Any other questions or comments can be directed to [Trager Joswig-Jones](mailto:joswitra@uw.edu) and/or Ahmed S. Zamzam. 
