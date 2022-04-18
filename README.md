@@ -1,6 +1,6 @@
 # OPFLearn.jl
 
-<img src="https://github.com/NREL/OPFLearn.jl/blob/main/docs/src/assets/logo.svg?raw=true" align="left" width="250" alt="OPFLearn logo">
+[comment]: <img src="https://github.com/NREL/OPFLearn.jl/blob/main/docs/src/assets/logo.svg?raw=true" align="left" width="250" alt="OPFLearn logo">
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://NREL.github.io/OPFLearn.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://NREL.github.io/OPFLearn.jl/dev)
